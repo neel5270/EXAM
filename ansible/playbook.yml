@@ -1,0 +1,6 @@
+---
+- name: Deploy Hello World application
+  hosts: localhost
+  tasks:
+    - name: Apply Kubernetes deployment
+      command: kubectl apply -f /home/einfochips/Practice_DevOps/kubernetes/deployment.yml
