@@ -3,14 +3,13 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockercrd') // DockerHub credentials ID
-        GITHUB_CREDENTIALS = credentials('github-pat') // GitHub credentials ID
-        DOCKERHUB_REPO = 'neelpatel5270/java-hello-world' // Your DockerHub repository
+        DOCKERHUB_REPO = 'neelpatel5270/java-hello' // Your DockerHub repository
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', credentialsId: 'github-pat', url: 'https://github.com/neel5270/Practice_DevOps.git'
+                git branch: 'main', credentialsId: 'github-pat', url: 'https://github.com/neel5270/EXAM.git'
             }
         }
         stage('Build Docker Image') {
@@ -33,7 +32,7 @@ pipeline {
         stage('Deploy Container') {
             steps {
                 script {
-                    sh 'docker run -d --name java-hello-world -p 8080:8080 neelpatel5270/java-hello-world:latest'
+                    sh 'docker run -d --name java-hello -p 8080:8080 neelpatel5270/java-hello:latest'
                 }
             }
         }
