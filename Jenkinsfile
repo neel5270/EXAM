@@ -9,21 +9,36 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/neel5270/EXAM.git' // Your GitHub repository URL
+                script {
+                    // Checkout the repository and branch
+                    try {
+                        git branch: 'main', url: 'https://github.com/neel5270/EXAM.git'
+                    } catch (Exception e) {
+                        error "Failed to clone repository: ${e.message}"
+                    }
+                }
             }
         }
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("$DOCKERHUB_REPO:latest")
+                    try {
+                        docker.build("${DOCKERHUB_REPO}:latest")
+                    } catch (Exception e) {
+                        error "Failed to build Docker image: ${e.message}"
+                    }
                 }	
             }
         }
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'DOCKERHUB_CREDENTIALS') {
-                        docker.image("$DOCKERHUB_REPO:latest").push()
+                    try {
+                        docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS) {
+                            docker.image("${DOCKERHUB_REPO}:latest").push()
+                        }
+                    } catch (Exception e) {
+                        error "Failed to push Docker image: ${e.message}"
                     }
                 }
             }
@@ -31,7 +46,11 @@ pipeline {
         stage('Deploy Container') {
             steps {
                 script {
-                    sh 'docker run -d --name java-hello -p 8080:8080 neelpatel5270/java-hello:latest' // Adjust port mapping as necessary
+                    try {
+                        sh 'docker run -d --name java-hello -p 8080:8080 neelpatel5270/java-hello:latest' // Adjust port mapping as necessary
+                    } catch (Exception e) {
+                        error "Failed to deploy container: ${e.message}"
+                    }
                 }
             }
         }
