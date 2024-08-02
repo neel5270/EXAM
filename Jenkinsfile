@@ -80,7 +80,17 @@ pipeline {
         }
         stage('Deploy to Kubernetes') {
             steps {
-                ansiblePlaybook playbook: 'ansible/playbook.yml'
+                script {
+                    try {
+                        ansiblePlaybook(
+                            playbook: 'ansible/playbook.yml',
+                            inventory: 'ansible/inventory',
+                            colorized: true
+                        )
+                    } catch (Exception e) {
+                        error "Failed to run Ansible playbook: ${e.message}"
+                    }
+                }
             }
         }
     }
