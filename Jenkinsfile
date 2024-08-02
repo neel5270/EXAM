@@ -24,6 +24,8 @@ pipeline {
                 script {
                     try {
                         docker.build("${DOCKERHUB_REPO}:latest")
+                        sh 'javac HelloWorld.java'
+                        sh 'java HelloWorld'
                     } catch (Exception e) {
                         error "Failed to build Docker image: ${e.message}"
                     }
