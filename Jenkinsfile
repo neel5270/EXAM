@@ -24,12 +24,22 @@ pipeline {
                 script {
                     try {
                         docker.build("${DOCKERHUB_REPO}:latest")
-                        sh 'javac HelloWorld.java'
-                        sh 'java HelloWorld'
                     } catch (Exception e) {
                         error "Failed to build Docker image: ${e.message}"
                     }
                 }	
+            }
+        }
+        stage('Compile and Run Java Application') {
+            steps {
+                script {
+                    try {
+                        sh 'javac src/HelloWorld.java'
+                        sh 'java -cp src HelloWorld'
+                    } catch (Exception e) {
+                        error "Failed to compile and run Java application: ${e.message}"
+                    }
+                }
             }
         }
         stage('Test DockerHub Credentials') {
