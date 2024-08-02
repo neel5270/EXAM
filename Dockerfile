@@ -11,4 +11,4 @@ COPY src .
 RUN javac HelloWorld.java
 
 # Define the command to run the app
-CMD ["java", "main.HelloWorld"]
+CMD ["java", "HelloWorld"]
