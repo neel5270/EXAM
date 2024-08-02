@@ -78,5 +78,10 @@ pipeline {
                 }
             }
         }
+        stage('Deploy to Kubernetes') {
+            steps {
+                ansiblePlaybook playbook: 'ansible/playbook.yml'
+            }
+        }
     }
 }
