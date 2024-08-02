@@ -56,7 +56,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'docker run -d --name java-hello -p 8080:8080 neelpatel5270/java-hello:latest' // Adjust port mapping as necessary
+                        sh 'docker run -d --name java-hello -p 8081:8080 neelpatel5270/java-hello:latest' // Adjust port mapping as necessary
                     } catch (Exception e) {
                         error "Failed to deploy container: ${e.message}"
                     }
