@@ -55,11 +55,14 @@ pipeline {
         stage('Deploy Container') {
             steps {
                 script {
-                    try {
-                        sh 'docker run -d --name java-hello -p 8081:8080 neelpatel5270/java-hello:latest' // Adjust port mapping as necessary
-                    } catch (Exception e) {
-                        error "Failed to deploy container: ${e.message}"
-                    }
+                    // Remove the existing container if it exists
+                    sh '''
+                        if [ $(docker ps -aq -f name=java-hello) ]; then
+                            docker rm -f java-hello
+                        fi
+                    '''
+                    // Start a new container
+                    sh 'docker run -d --name java-hello -p 8081:8080 neelpatel5270/java-hello:latest'
                 }
             }
         }
