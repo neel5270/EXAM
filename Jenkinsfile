@@ -45,7 +45,7 @@ pipeline {
         stage('Test DockerHub Credentials') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockercrd') {
+                    docker.withRegistry('', 'dockercrd') {
                         echo 'DockerHub login successful'
                     }
                 }
@@ -55,7 +55,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        docker.withRegistry('https://index.docker.io/v1/', 'dockercrd') {
+                        docker.withRegistry('', 'dockercrd') {
                             docker.image("${DOCKERHUB_REPO}:latest").push()
                         }
                     } catch (Exception e) {
